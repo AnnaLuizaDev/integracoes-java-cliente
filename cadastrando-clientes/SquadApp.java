@@ -22,7 +22,7 @@ class SquadMember {
         return id;
     }
 
-    public void setId() {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -217,6 +217,14 @@ public class SquadApp {
         System.out.print("Função: ");
         String funcao = scanner.nextLine(); SquadMember member = new SquadMember(id, nome, tempo, squad, funcao);
         squadDAO.atualizarIntegrante((member));
+
+        member.setNome(nome);
+        member.setTempoEmpresa(tempo);
+        member.setSquad(squad);
+        member.setFuncao(funcao);
+
+        squadDAO.atualizarIntegrante(member);
+
     }
 
     private static void deletar() {

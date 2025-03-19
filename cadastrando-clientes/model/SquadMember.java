@@ -16,52 +16,42 @@ public class SquadMember {
     }
 
     public int getId() {
-
         return id;
     }
 
     public void setId(int id) {
-
         this.id = id;
     }
 
     public String getNome() {
-
         return nome;
     }
 
     public void setNome(String nome) {
-
         this.nome = nome;
     }
 
     public int getTempoEmpresa() {
-
         return tempoEmpresa;
     }
 
     public void setTempoEmpresa(int tempoEmpresa) {
-
         this.tempoEmpresa = tempoEmpresa;
     }
 
     public String getSquad() {
-
         return squad;
     }
 
     public void setSquad(String squad) {
-
         this.squad = squad;
     }
 
     public String getFuncao() {
-
         return funcao;
     }
 
     public void setFuncao(String funcao) {
-
         this.funcao = funcao;
     }
 

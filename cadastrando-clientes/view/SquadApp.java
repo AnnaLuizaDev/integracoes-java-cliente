@@ -3,7 +3,6 @@ package view;
 import model.DatabaseManager;
 import model.SquadDAO;
 import model.SquadMember;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,15 +43,38 @@ public class SquadApp {
     }
 
     private static void cadastrar() {
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
-        System.out.print("Tempo de Empresa (anos): ");
+        String nome;
+        do {
+            System.out.print("Nome: ");
+            nome = scanner.nextLine();
+            if (!squadDAO.isValidString(nome)) {
+                System.out.println("Nome inválido. Deve conter apenas letras.");
+            }
+        } while (!squadDAO.isValidString(nome));
+
+        System.out.print("Tempo de empresa (anos): ");
         int tempo = Integer.parseInt(scanner.nextLine());
-        System.out.print("Squad: ");
-        String squad = scanner.nextLine();
-        System.out.print("Função: ");
-        String funcao = scanner.nextLine(); SquadMember member = new SquadMember(0, nome, tempo, squad, funcao);
-        squadDAO.cadastrarIntegrante((member));
+
+        String squad;
+        do {
+            System.out.print("Squad: ");
+            squad = scanner.nextLine();
+            if (!squadDAO.isValidString(squad)) {
+                System.out.print("Squad inválido. Deve conter apenas letras.");
+            }
+        } while (!squadDAO.isValidString(squad));
+
+        String funcao;
+        do {
+            System.out.print("Função: ");
+            funcao = scanner.nextLine();
+            if (!squadDAO.isValidString(funcao)) {
+                System.out.print("Função inválida. Deve conter apenas letras.");
+            }
+        } while (!squadDAO.isValidString(funcao));
+
+        SquadMember member = new SquadMember(0, nome, tempo, squad, funcao);
+        squadDAO.cadastrarIntegrante(member);
     }
 
     private static void listar() {
@@ -66,28 +88,48 @@ public class SquadApp {
     private static void atualizar() {
         System.out.print("ID do Integrante: ");
         int id = Integer.parseInt(scanner.nextLine());
-        System.out.print("Nome: ");
+
+        if (id <= 0 || !squadDAO.isValidId(id)) {
+            System.out.println("ID inválido. Tente novamente.");
+            return;
+        }
+
+        System.out.print("Nome (deixe vazio para não alterar): ");
         String nome = scanner.nextLine();
+        if (!nome.isEmpty() && !squadDAO.isValidString(nome)) {
+            System.out.println("Nome inválido. Deve conter apenas letras.");
+            return;
+        }
+
         System.out.print("Tempo de Empresa (anos): ");
         int tempo = Integer.parseInt(scanner.nextLine());
-        System.out.print("Squad: ");
+
+        System.out.print("Squad (deixe vazio para não alterar): ");
         String squad = scanner.nextLine();
-        System.out.print("Função: ");
-        String funcao = scanner.nextLine(); SquadMember member = new SquadMember(id, nome, tempo, squad, funcao);
-        squadDAO.atualizarIntegrante((member));
+        if (!squad.isEmpty() && !squadDAO.isValidString(squad)) {
+            System.out.println("Squad inválido. Deve conter apenas letras.");
+            return;
+        }
 
-        member.setNome(nome);
-        member.setTempoEmpresa(tempo);
-        member.setSquad(squad);
-        member.setFuncao(funcao);
+        System.out.print("Função (deixe vazio para não alterar): ");
+        String funcao = scanner.nextLine();
+        if (!funcao.isEmpty() && !squadDAO.isValidString(funcao)) {
+            System.out.println("Função inválida. Deve conter apenas letras.");
+            return;
+        }
 
+        SquadMember member = new SquadMember(id, nome, tempo, squad, funcao);
         squadDAO.atualizarIntegrante(member);
-
     }
 
     private static void deletar() {
         System.out.print("ID do Integrante: ");
         int id = Integer.parseInt(scanner.nextLine());
+
+        if (id <= 0 || !squadDAO.isValidId(id)) {
+            System.out.println("ID inválido. Tente novamente.");
+            return;
+        }
         squadDAO.deletarIntegrante(id);
     }
 }

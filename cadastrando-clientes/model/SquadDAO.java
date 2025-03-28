@@ -82,6 +82,11 @@ public class SquadDAO {
             params.add(member.getFuncao());
         }
 
+        if(params.isEmpty()) {
+            System.out.println("Nenhuma informação foi alterada.");
+            return;
+        }
+
         sql.setLength(sql.length() - 2);
         sql.append(" WHERE id = ?");
         params.add(member.getId());

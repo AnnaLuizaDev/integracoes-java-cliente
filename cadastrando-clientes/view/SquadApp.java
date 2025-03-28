@@ -60,7 +60,7 @@ public class SquadApp {
             System.out.print("Squad: ");
             squad = scanner.nextLine();
             if (!squadDAO.isValidString(squad)) {
-                System.out.print("Squad inválido. Deve conter apenas letras.");
+                System.out.print("Squad inválido. Deve conter apenas letras.\n");
             }
         } while (!squadDAO.isValidString(squad));
 
@@ -69,7 +69,7 @@ public class SquadApp {
             System.out.print("Função: ");
             funcao = scanner.nextLine();
             if (!squadDAO.isValidString(funcao)) {
-                System.out.print("Função inválida. Deve conter apenas letras.");
+                System.out.print("Função inválida. Deve conter apenas letras.\n");
             }
         } while (!squadDAO.isValidString(funcao));
 
@@ -95,30 +95,47 @@ public class SquadApp {
         }
 
         System.out.print("Nome (deixe vazio para não alterar): ");
-        String nome = scanner.nextLine();
-        if (!nome.isEmpty() && !squadDAO.isValidString(nome)) {
+        String nome = scanner.nextLine().trim();
+        if (nome.isEmpty()) nome = null;
+        else if (!squadDAO.isValidString(nome)) {
             System.out.println("Nome inválido. Deve conter apenas letras.");
             return;
         }
 
         System.out.print("Tempo de Empresa (anos): ");
-        int tempo = Integer.parseInt(scanner.nextLine());
+        String tempoInput = scanner.nextLine().trim();
+        Integer tempo = null;
+        if (!tempoInput.isEmpty()) {
+            try {
+                tempo = Integer.parseInt(tempoInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Tempo de empresa inválido. Tente novamente.");
+                return;
+            }
+        }
 
         System.out.print("Squad (deixe vazio para não alterar): ");
-        String squad = scanner.nextLine();
-        if (!squad.isEmpty() && !squadDAO.isValidString(squad)) {
+        String squad = scanner.nextLine().trim();
+        if (squad.isEmpty()) squad = null;
+        else if(!squadDAO.isValidString(squad)) {
             System.out.println("Squad inválido. Deve conter apenas letras.");
             return;
         }
 
         System.out.print("Função (deixe vazio para não alterar): ");
-        String funcao = scanner.nextLine();
-        if (!funcao.isEmpty() && !squadDAO.isValidString(funcao)) {
+        String funcao = scanner.nextLine().trim();
+        if (funcao.isEmpty()) funcao = null;
+        else if(!squadDAO.isValidString(funcao)) {
             System.out.println("Função inválida. Deve conter apenas letras.");
             return;
         }
 
-        SquadMember member = new SquadMember(id, nome, tempo, squad, funcao);
+        if(nome == null && tempo == null && squad == null && funcao == null) {
+            System.out.println("Nenhuma informação foi alterada.");
+            return;
+        }
+
+        SquadMember member = new SquadMember(id, (nome != null) ? nome: null, (tempo != null) ? tempo: 0, (squad != null) ? squad: null, (funcao != null) ? funcao: null);
         squadDAO.atualizarIntegrante(member);
     }
 
